@@ -58,7 +58,7 @@ router.post("/", async (req, res, next) => {
 router.put("/:contactId", async (req, res, next) => {
   try {
     if (Object.keys(req.body).length === 0) {
-      throw HttpError(400, "missing required name field");
+      throw HttpError(400, "missing fields");
     }
     const { error } = addSchema.validate(req.body);
     if (error) {
@@ -78,8 +78,8 @@ router.put("/:contactId", async (req, res, next) => {
 
 router.delete("/:contactId", async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const result = await contacts.removeContact(id);
+    const { contactId } = req.params;
+    const result = await contacts.removeContact(contactId);
     if (!result) {
       throw HttpError(404, "Not found");
     }
