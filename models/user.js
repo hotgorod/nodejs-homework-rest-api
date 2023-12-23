@@ -5,21 +5,21 @@ const { handleMongooseError } = require("../helpers");
 
 const userSchema = new Schema(
   {
-    name: {
+    password: {
       type: String,
-      required: true,
+      required: [true, "Set password for user"],
     },
     email: {
       type: String,
+      required: [true, "Email is required"],
       unique: true,
-      required: true,
     },
-
-    password: {
+    subscription: {
       type: String,
-      required: true,
-      minlength: 6,
+      enum: ["starter", "pro", "business"],
+      default: "starter",
     },
+    token: String,
   },
   { versionKey: false, timestamps: true }
 );
@@ -27,9 +27,9 @@ const userSchema = new Schema(
 userSchema.post("save", handleMongooseError);
 
 const registerSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
+  email: Joi.string().email().required(),
+  subscription: Joi.string(),
 });
 
 const loginSchema = Joi.object({
