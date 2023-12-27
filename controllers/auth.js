@@ -44,15 +44,19 @@ const login = async (req, res) => {
     await User.findByIdAndUpdate(user._id, { token });
     res.json({
         token,
+        user: { email: user.email, subscription: user.subscription},
     })
 }
 
 const getCurrent = async (req, res) => {
-    const { email } = req.user;
+    const { email, subscription } = req.user;
 
     res.json({
+      
         email,
-    })
+        subscription,
+      
+    });
 }
 
 const logout = async (req, res) => {
